@@ -1,0 +1,31 @@
+@startuml
+title Fragmento OPT (opcional - if sin else)
+
+participant ":Cliente" as C
+participant ":CarritoCompra" as Cart
+participant ":ServicioDescuentos" as SD
+
+C -> Cart: finalizarCompra()
+activate Cart
+
+Cart -> Cart: calcularTotal()
+activate Cart
+deactivate Cart
+
+opt cliente.esPremium()
+  note right: Este bloque solo se ejecuta\nsi la condición es verdadera\n(no hay rama else)
+
+  Cart -> SD: aplicarDescuentoPremium()
+  activate SD
+  SD --> Cart: descuento
+  deactivate SD
+
+  Cart -> Cart: ajustarTotal(descuento)
+  activate Cart
+  deactivate Cart
+end
+
+Cart --> C: total final
+deactivate Cart
+
+@enduml

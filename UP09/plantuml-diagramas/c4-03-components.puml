@@ -1,0 +1,35 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Diagrama C4 - Nivel 3: Componentes (API REST)
+
+Container(webapp, "Aplicación Web", "React", "Interfaz de usuario")
+Container_Boundary(api, "API REST") {
+    Component(pedidosCtrl, "Pedidos Controller", "Spring MVC", "Endpoints de pedidos")
+    Component(productosCtrl, "Productos Controller", "Spring MVC", "Endpoints de productos")
+    Component(pedidosService, "Pedidos Service", "Spring Bean", "Lógica de negocio de pedidos")
+    Component(productosService, "Productos Service", "Spring Bean", "Lógica de negocio de productos")
+    Component(stockService, "Stock Service", "Spring Bean", "Gestión de inventario")
+    Component(pedidosRepo, "Pedidos Repository", "Spring Data", "Acceso a datos de pedidos")
+    Component(productosRepo, "Productos Repository", "Spring Data", "Acceso a datos de productos")
+}
+ContainerDb(db, "Base de datos", "PostgreSQL", "Almacena datos")
+System_Ext(pagos, "Sistema de Pagos", "Stripe")
+
+Rel(webapp, pedidosCtrl, "Llama", "JSON/HTTPS")
+Rel(webapp, productosCtrl, "Llama", "JSON/HTTPS")
+
+Rel(pedidosCtrl, pedidosService, "Usa")
+Rel(productosCtrl, productosService, "Usa")
+
+Rel(pedidosService, pedidosRepo, "Usa")
+Rel(pedidosService, stockService, "Verifica stock")
+Rel(pedidosService, pagos, "Procesa pago", "HTTPS")
+
+Rel(productosService, productosRepo, "Usa")
+Rel(productosService, stockService, "Consulta stock")
+
+Rel(pedidosRepo, db, "Lee/Escribe", "JDBC")
+Rel(productosRepo, db, "Lee/Escribe", "JDBC")
+
+@enduml

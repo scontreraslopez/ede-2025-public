@@ -1,0 +1,28 @@
+@startuml
+title Fragmento ALT (alternativa if-else)
+
+participant ":Cliente" as C
+participant ":CuentaBancaria" as CB
+
+C -> CB: retirar(100)
+activate CB
+
+CB -> CB: getSaldo()
+activate CB
+deactivate CB
+
+alt saldo >= importe
+  CB -> CB: descontarSaldo(100)
+  activate CB
+  deactivate CB
+
+  CB --> C: OK, dinero retirado
+  note right: Rama del IF\n(condición verdadera)
+else saldo < importe
+  CB --> C: ERROR, saldo insuficiente
+  note right: Rama del ELSE\n(condición falsa)
+end
+
+deactivate CB
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+title Mensajes a uno mismo (Self-call)
+
+participant ":Validador" as V
+participant ":FormularioRegistro" as F
+
+F -> V: validarFormulario(datos)
+activate V
+
+V -> V: validarEmail()
+activate V
+note right: El objeto se envía\nun mensaje a sí mismo
+deactivate V
+
+V -> V: validarPassword()
+activate V
+note right: Otra auto-llamada
+deactivate V
+
+V -> V: validarEdad()
+activate V
+deactivate V
+
+V --> F: resultado
+deactivate V
+
+@enduml

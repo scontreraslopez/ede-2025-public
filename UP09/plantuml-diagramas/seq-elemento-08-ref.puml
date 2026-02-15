@@ -1,0 +1,35 @@
+@startuml
+title Fragmento REF (referencia a otro diagrama)
+
+participant ":Cliente" as C
+participant ":CarritoCompra" as Cart
+participant ":ServicioPago" as SP
+
+C -> Cart: realizarCheckout()
+activate Cart
+
+ref over C, Cart
+  Validar datos del cliente
+  (ver diagrama de validación)
+end ref
+note right: REF hace referencia a otro\ndiagrama de secuencia completo\npara no repetir el detalle
+
+Cart -> Cart: calcularTotal()
+activate Cart
+deactivate Cart
+
+ref over Cart, SP
+  Proceso de autenticación
+  (ver seq-01-autenticacion)
+end ref
+note right: Otro ejemplo de REF\napuntando a un diagrama existente
+
+Cart -> SP: procesarPago(total)
+activate SP
+SP --> Cart: confirmación
+deactivate SP
+
+Cart --> C: pedido confirmado
+deactivate Cart
+
+@enduml

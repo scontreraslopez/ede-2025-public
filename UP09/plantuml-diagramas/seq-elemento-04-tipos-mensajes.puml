@@ -1,0 +1,31 @@
+@startuml
+title Tipos de Mensajes
+
+participant ":Cliente" as C
+participant ":Servicio" as S
+participant ":Logger" as L
+
+note over C,S: Mensaje SÍNCRONO (flecha rellena)
+C -> S: procesarPedido()
+activate S
+note right: El cliente espera\nla respuesta
+
+note over S,L: Mensaje ASÍNCRONO (flecha abierta)
+S ->> L: registrarEvento()
+note right: No espera respuesta,\nel Logger procesa en paralelo
+
+S -> S: calcular()
+activate S
+deactivate S
+
+note over C,S: Mensaje de RETORNO (flecha discontinua)
+S --> C: resultado
+deactivate S
+note left: Devuelve el\ncontrol al cliente
+
+note over C: Mensaje de CREACIÓN
+create participant ":Reporte" as R
+C -> R: new Reporte()
+note right: Flecha discontinua\nhacia nuevo objeto
+
+@enduml

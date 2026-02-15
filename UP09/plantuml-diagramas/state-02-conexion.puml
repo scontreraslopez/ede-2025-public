@@ -1,0 +1,13 @@
+@startuml
+[*] --> Desconectado : iniciar
+
+Desconectado --> Conectando : conectar()
+Conectando --> Conectado : conexiónEstablecida
+Conectando --> Desconectado : timeout
+
+Conectado --> Cerrando : cerrar()
+Conectado --> Desconectado : error / reintentar
+
+Cerrando --> Desconectado : cerradoOk
+
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+left to right direction
+
+actor Cliente
+actor Administrador
+
+rectangle "Sistema de Tienda" {
+    usecase "Buscar productos" as UC1
+    usecase "Realizar pedido" as UC2
+    usecase "Gestionar inventario" as UC3
+    usecase "Ver informes" as UC4
+}
+
+Cliente --> UC1
+Cliente --> UC2
+Administrador --> UC3
+Administrador --> UC4
+Administrador --|> Cliente
+@enduml

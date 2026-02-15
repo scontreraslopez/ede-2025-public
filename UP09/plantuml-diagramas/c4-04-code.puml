@@ -1,0 +1,61 @@
+@startuml
+title Diagrama C4 - Nivel 4: Código (Pedidos Service)
+
+note as N1
+  Nota: Simon Brown recomienda NO crear estos diagramas manualmente,
+  sino generarlos automáticamente desde el código cuando sea necesario.
+  Este es un ejemplo simplificado con fines didácticos.
+end note
+
+class PedidosService {
+  - pedidosRepository: PedidosRepository
+  - stockService: StockService
+  - pagoService: PagoService
+  + crearPedido(datos): Pedido
+  + confirmarPedido(id): boolean
+  + cancelarPedido(id): void
+}
+
+class PedidosRepository {
+  + save(pedido): Pedido
+  + findById(id): Pedido
+  + findByCliente(clienteId): List<Pedido>
+}
+
+class StockService {
+  + verificarDisponibilidad(productoId, cantidad): boolean
+  + reservar(productoId, cantidad): void
+  + liberar(productoId, cantidad): void
+}
+
+class PagoService {
+  + procesarPago(pedido, tarjeta): ResultadoPago
+  + reembolsar(pedidoId): boolean
+}
+
+class Pedido {
+  - id: Long
+  - clienteId: Long
+  - items: List<ItemPedido>
+  - estado: EstadoPedido
+  - total: BigDecimal
+  + calcularTotal(): BigDecimal
+  + validar(): boolean
+}
+
+enum EstadoPedido {
+  PENDIENTE
+  CONFIRMADO
+  PAGADO
+  ENVIADO
+  ENTREGADO
+  CANCELADO
+}
+
+PedidosService --> PedidosRepository
+PedidosService --> StockService
+PedidosService --> PagoService
+PedidosService ..> Pedido : creates
+Pedido --> EstadoPedido
+
+@enduml

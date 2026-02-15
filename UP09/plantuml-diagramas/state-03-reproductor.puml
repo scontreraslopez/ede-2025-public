@@ -1,0 +1,11 @@
+@startuml
+[*] --> Parado
+
+Parado --> Reproduciendo : play [hayCanción]
+Reproduciendo --> Pausado : pause
+Reproduciendo --> Parado : stop
+
+Pausado --> Reproduciendo : play
+Pausado --> Parado : stop
+
+@enduml

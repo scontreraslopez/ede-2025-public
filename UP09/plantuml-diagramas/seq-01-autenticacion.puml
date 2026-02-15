@@ -1,0 +1,26 @@
+@startuml
+actor Usuario
+participant ":LoginForm" as Form
+participant ":AuthService" as Auth
+participant ":Database" as DB
+
+Usuario -> Form: introducir credenciales
+activate Form
+Form -> Auth: login(user, pwd)
+activate Auth
+Auth -> DB: findUser(user)
+activate DB
+DB --> Auth: usuario
+deactivate DB
+
+alt pwd correcta
+  Auth -> Auth: crearSesión()
+  Auth --> Form: sesión
+else
+  Auth --> Form: error
+end
+deactivate Auth
+
+Form --> Usuario: resultado
+deactivate Form
+@enduml

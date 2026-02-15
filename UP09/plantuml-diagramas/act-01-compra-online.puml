@@ -1,0 +1,22 @@
+@startuml
+start
+:Buscar productos;
+
+while (seguir comprando?) is (sí)
+  :Añadir al carrito;
+endwhile (no)
+
+:Ir al checkout;
+:Identificarse;
+:Elegir envío;
+:Pagar;
+
+if (pago ok?) then (sí)
+  :Confirmar pedido;
+  stop
+else (no)
+  :Mostrar error;
+  :Reintentar pago;
+  stop
+endif
+@enduml

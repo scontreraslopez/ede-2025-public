@@ -1,0 +1,44 @@
+@startuml
+title Creación y Destrucción de Objetos
+
+participant ":Cliente" as C
+participant ":PedidoFactory" as PF
+
+C -> PF: crearPedido(datos)
+activate PF
+
+create participant ":Pedido" as P
+PF --> P: new Pedido()
+note right: Flecha discontinua para\nindicar creación de objeto
+
+activate P
+P -> P: inicializar()
+deactivate P
+
+P --> PF:
+note right: Retorno del constructor\n(devuelve referencia al objeto)
+
+PF --> C: pedido
+deactivate PF
+
+C -> P: procesar()
+activate P
+
+P -> P: validar()
+activate P
+
+alt error crítico
+  P -> P: limpiarRecursos()
+  deactivate P
+
+  P --> C: ERROR
+  note right: Debe informar del error\nantes de destruirse
+
+  destroy P
+  note right: X marca la\ndestrucción del objeto
+else validación OK
+  P --> C: OK
+  deactivate P
+end
+
+@enduml

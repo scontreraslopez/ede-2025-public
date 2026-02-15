@@ -1,0 +1,23 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Diagrama C4 - Nivel 2: Contenedores
+
+Person(cliente, "Cliente", "Usuario de la tienda")
+System_Boundary(sistema, "Sistema E-commerce") {
+    Container(webapp, "Aplicación Web", "React", "Interfaz de usuario SPA")
+    Container(api, "API REST", "Spring Boot", "Lógica de negocio y servicios")
+    ContainerDb(db, "Base de datos", "PostgreSQL", "Almacena productos, pedidos, usuarios")
+    Container(cache, "Cache", "Redis", "Cache de sesiones y datos frecuentes")
+}
+System_Ext(pagos, "Sistema de Pagos", "Procesa pagos con tarjeta")
+System_Ext(email, "Servidor Email", "Envía confirmaciones")
+
+Rel(cliente, webapp, "Usa", "HTTPS")
+Rel(webapp, api, "Llama", "JSON/HTTPS")
+Rel(api, db, "Lee/Escribe", "JDBC")
+Rel(api, cache, "Lee/Escribe", "Redis Protocol")
+Rel(api, pagos, "Procesa pagos", "HTTPS")
+Rel(api, email, "Envía emails", "SMTP")
+
+@enduml

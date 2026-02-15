@@ -1,0 +1,13 @@
+@startuml
+[*] --> Pendiente : crearPedido()
+
+Pendiente --> Confirmado : confirmar()
+Pendiente --> Cancelado : cancelar()
+
+Confirmado --> Pagado : pagar()
+Pagado --> Enviado : enviar()
+Enviado --> Entregado : entregar()
+
+Entregado --> [*]
+Cancelado --> [*]
+@enduml

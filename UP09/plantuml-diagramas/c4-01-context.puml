@@ -1,0 +1,22 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Diagrama C4 - Nivel 1: Contexto
+
+Person(cliente, "Cliente", "Usuario que compra productos online")
+Person(admin, "Administrador", "Gestiona inventario y pedidos")
+
+System(ecommerce, "Sistema E-commerce", "Permite a los clientes comprar productos online")
+
+System_Ext(email, "Sistema de Email", "SendGrid")
+System_Ext(pagos, "Pasarela de Pagos", "Stripe/PayPal")
+System_Ext(envios, "Sistema de Envíos", "Correos/UPS")
+
+Rel(cliente, ecommerce, "Compra productos", "HTTPS")
+Rel(admin, ecommerce, "Gestiona inventario", "HTTPS")
+
+Rel(ecommerce, email, "Envía confirmaciones", "SMTP")
+Rel(ecommerce, pagos, "Procesa pagos", "HTTPS/API")
+Rel(ecommerce, envios, "Gestiona envíos", "HTTPS/API")
+
+@enduml

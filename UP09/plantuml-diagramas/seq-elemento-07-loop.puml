@@ -1,0 +1,32 @@
+@startuml
+title Fragmento LOOP (bucle)
+
+participant ":CarritoCompra" as Cart
+participant ":Producto" as P
+participant ":ServicioImpuestos" as SI
+
+Cart -> Cart: calcularTotalConImpuestos()
+activate Cart
+
+loop para cada item en carrito
+  note right: Este bloque se repite\npor cada elemento
+
+  Cart -> P: getPrecio()
+  activate P
+  P --> Cart: precio
+  deactivate P
+
+  Cart -> SI: calcularImpuesto(precio)
+  activate SI
+  SI --> Cart: impuesto
+  deactivate SI
+
+  Cart -> Cart: sumarAlTotal(precio + impuesto)
+  activate Cart
+  deactivate Cart
+end
+
+Cart -> Cart: total
+deactivate Cart
+
+@enduml

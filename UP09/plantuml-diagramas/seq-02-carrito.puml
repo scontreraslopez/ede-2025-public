@@ -1,0 +1,25 @@
+@startuml
+actor Cliente
+participant ":Catalogo" as Cat
+participant ":Producto" as Prod
+participant ":Carrito" as Cart
+
+Cliente -> Cat: buscar("café")
+activate Cat
+Cat --> Cliente: productos
+deactivate Cat
+
+Cliente -> Prod: seleccionar producto
+activate Prod
+Prod --> Cliente: detalles
+deactivate Prod
+
+Cliente -> Cart: añadir al carrito
+activate Cart
+Cart -> Prod: verificar stock
+activate Prod
+Prod --> Cart: [hay stock]
+deactivate Prod
+Cart --> Cliente: confirmación
+deactivate Cart
+@enduml

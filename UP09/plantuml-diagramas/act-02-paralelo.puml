@@ -1,0 +1,14 @@
+@startuml
+start
+:Recibir pedido;
+
+fork
+  :Preparar productos;
+  :Embalar;
+fork again
+  :Generar factura;
+end fork
+
+:Enviar;
+stop
+@enduml

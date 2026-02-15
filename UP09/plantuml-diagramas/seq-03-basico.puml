@@ -1,0 +1,14 @@
+@startuml
+actor Cliente
+participant "Carrito" as C
+participant "Stock" as S
+
+Cliente -> C: añadirProducto(item)
+activate C
+C -> S: verificarDisponibilidad(item)
+activate S
+S --> C: disponible
+deactivate S
+C --> Cliente: confirmación
+deactivate C
+@enduml

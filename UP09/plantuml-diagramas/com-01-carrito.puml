@@ -1,0 +1,8 @@
+@startuml
+object ":Cliente" as cliente
+object ":Carrito" as carrito
+object ":Stock" as stock
+
+cliente -> carrito : 1: añadir(item)
+carrito -> stock : 1.1: verificar()
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+|Cliente|
+start
+:Realizar pedido;
+
+|Sistema|
+:Procesar pedido;
+
+|Almacén|
+:Preparar envío;
+:Embalar;
+:Enviar;
+
+|Cliente|
+:Recibir pedido;
+stop
+@enduml

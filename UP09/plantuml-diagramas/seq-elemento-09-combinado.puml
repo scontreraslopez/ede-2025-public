@@ -1,0 +1,49 @@
+@startuml
+title Fragmentos Combinados (caso completo)
+
+participant ":Cliente" as C
+participant ":CarritoCompra" as Cart
+participant ":Producto" as P
+participant ":ServicioPago" as SP
+
+C -> Cart: checkout()
+activate Cart
+
+loop para cada item
+  Cart -> P: verificarStock()
+  activate P
+
+  alt stock disponible
+    P --> Cart: OK
+  else sin stock
+    P --> Cart: ERROR
+    Cart -> Cart: marcarNoDisponible()
+    activate Cart
+    deactivate Cart
+  end
+  deactivate P
+end
+
+opt hay items no disponibles
+  Cart --> C: "Algunos items no están disponibles"
+  note right: Opcional: solo si hubo\nalgún problema de stock
+  C -> C: decidir continuar
+  activate C
+  deactivate C
+end
+
+Cart -> SP: procesarPago(total)
+activate SP
+
+alt pago exitoso
+  SP --> Cart: OK
+  Cart --> C: "Pedido confirmado"
+else pago rechazado
+  SP --> Cart: ERROR
+  Cart --> C: "Pago rechazado, intente de nuevo"
+end
+
+deactivate SP
+deactivate Cart
+
+@enduml

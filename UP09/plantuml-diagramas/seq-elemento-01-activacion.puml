@@ -1,0 +1,20 @@
+@startuml
+title Ejemplo de Activación (Focus of Control)
+
+participant ":Cliente" as C
+participant ":Carrito" as Cart
+
+C -> Cart: añadir(item)
+activate Cart
+note right: El rectángulo muestra\nque Carrito está activo
+
+Cart -> Cart: validarItem()
+activate Cart
+note right: Activación anidada\n(llamada interna)
+deactivate Cart
+
+C <-- Cart: confirmación
+deactivate Cart
+note right: Fin de la activación\nCarrito devuelve el control
+
+@enduml
