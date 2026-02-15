@@ -1,0 +1,33 @@
+@startuml class-customer
+class Cliente {
+  - nombre
+  - email
+}
+
+class Pedido {
+  - numero
+  - total
+}
+
+Cliente "1" --> "0..*" Pedido
+@enduml
+
+@startuml object-customer
+object "juan:Cliente" as juan {
+  nombre = "Juan Pérez"
+  email = "juan@mail.com"
+}
+
+object "pedido1:Pedido" as p1 {
+  numero = 12345
+  total = 150.00
+}
+
+object "pedido2:Pedido" as p2 {
+  numero = 12346
+  total = 89.99
+}
+
+juan --> p1
+juan --> p2
+@enduml

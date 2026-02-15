@@ -1,0 +1,11 @@
+@startuml class-interface
+interface Comparable {
+  + compareTo()
+}
+
+class Persona
+class Producto
+
+Comparable <|.. Persona
+Comparable <|.. Producto
+@enduml

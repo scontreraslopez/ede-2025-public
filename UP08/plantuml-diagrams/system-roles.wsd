@@ -1,0 +1,29 @@
+
+```plantuml
+@startuml system-roles
+left to right direction
+
+actor Usuario
+actor Administrador
+
+rectangle "Sistema de Gestión" {
+  usecase "Iniciar sesión" as UC1
+  usecase "Cerrar sesión" as UC2
+  usecase "Cambiar contraseña" as UC3
+  usecase "Consultar datos" as UC4
+  usecase "Crear usuario" as UC5
+  usecase "Eliminar usuario" as UC6
+  usecase "Generar informes" as UC7
+}
+
+Usuario <|-- Administrador
+
+Usuario --> UC1
+Usuario --> UC2
+Usuario --> UC3
+Usuario --> UC4
+
+Administrador --> UC5
+Administrador --> UC6
+Administrador --> UC7
+@enduml

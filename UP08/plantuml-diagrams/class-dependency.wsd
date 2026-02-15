@@ -1,0 +1,5 @@
+@startuml class-dependency
+class Servicio
+class DTO
+Servicio ..> DTO : <<use>>
+@enduml

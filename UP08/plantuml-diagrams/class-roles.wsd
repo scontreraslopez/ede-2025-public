@@ -1,0 +1,5 @@
+@startuml class-roles
+class Persona
+class Empresa
+Persona "empleado" --> "empleador" Empresa
+@enduml

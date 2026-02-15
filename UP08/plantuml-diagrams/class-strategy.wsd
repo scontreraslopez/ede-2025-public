@@ -1,0 +1,26 @@
+@startuml class-strategy
+interface EstrategiaPago {
+  + pagar(monto: double)
+}
+
+class CarritoCompra {
+  - items: List
+  - estrategiaPago: EstrategiaPago
+  + setEstrategia(estrategia: EstrategiaPago)
+  + checkout()
+}
+
+class PagoConTarjeta {
+  - numeroTarjeta: String
+  + pagar(monto: double)
+}
+
+class PagoConPayPal {
+  - email: String
+  + pagar(monto: double)
+}
+
+CarritoCompra --> EstrategiaPago
+EstrategiaPago <|.. PagoConTarjeta
+EstrategiaPago <|.. PagoConPayPal
+@enduml

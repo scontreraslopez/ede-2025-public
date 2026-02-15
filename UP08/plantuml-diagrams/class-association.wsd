@@ -1,0 +1,5 @@
+@startuml
+class Persona
+class Empresa
+Persona -- Empresa : trabaja en
+@enduml

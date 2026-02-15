@@ -1,0 +1,5 @@
+@startuml usecase-include
+usecase "Realizar pedido" as UC1
+usecase "Validar usuario" as UC2
+UC1 ..> UC2 : <<include>>
+@enduml

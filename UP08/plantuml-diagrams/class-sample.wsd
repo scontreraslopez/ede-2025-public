@@ -1,0 +1,8 @@
+@startuml
+class NombreClase {
+  - atributo1: tipo
+  - atributo2: tipo
+  + método1(): tipo
+  + método2(param): tipo
+}
+@enduml

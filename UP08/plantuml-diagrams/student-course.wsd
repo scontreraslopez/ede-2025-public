@@ -1,0 +1,5 @@
+@startuml student-course
+class Estudiante
+class Curso
+Estudiante "*" -- "*" Curso
+@enduml

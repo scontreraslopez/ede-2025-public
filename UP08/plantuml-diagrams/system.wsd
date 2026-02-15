@@ -1,0 +1,6 @@
+@startuml system
+rectangle "Sistema de Ventas" {
+  usecase "Realizar pedido" as UC1
+  usecase "Consultar stock" as UC2
+}
+@enduml

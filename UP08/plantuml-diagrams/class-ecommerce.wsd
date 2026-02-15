@@ -1,0 +1,32 @@
+@startuml class-ecommerce
+class Cliente {
+  - id: int
+  - nombre: String
+  - email: String
+  + realizarPedido()
+}
+
+class Pedido {
+  - numero: int
+  - fecha: Date
+  - estado: String
+  + calcularTotal(): double
+  + cancelar()
+}
+
+class LineaPedido {
+  - cantidad: int
+  - subtotal: double
+}
+
+class Producto {
+  - codigo: String
+  - nombre: String
+  - precio: double
+  + aplicarDescuento()
+}
+
+Cliente "1" --> "0..*" Pedido
+Pedido "1" *-- "0..*" LineaPedido
+LineaPedido "*" --> "1" Producto
+@enduml

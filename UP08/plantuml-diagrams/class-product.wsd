@@ -1,0 +1,11 @@
+@startuml
+class Producto {
+  - codigo: String
+  - nombre: String
+  - precio: double
+  - stock: int
+  + getPrecio(): double
+  + aplicarDescuento()
+  + hayStock(): boolean
+}
+@enduml

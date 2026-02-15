@@ -1,0 +1,12 @@
+@startuml
+abstract class Figura {
+  - color: String
+  + {abstract} calcularArea()
+}
+
+class Circulo
+class Rectangulo
+
+Figura <|-- Circulo
+Figura <|-- Rectangulo
+@enduml

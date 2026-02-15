@@ -1,0 +1,5 @@
+@startuml class-composition
+class Pedido
+class LineaPedido
+Pedido *-- LineaPedido : contiene
+@enduml

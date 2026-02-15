@@ -1,0 +1,5 @@
+@startuml class-navigation
+class Persona
+class Empresa
+Persona --> Empresa
+@enduml

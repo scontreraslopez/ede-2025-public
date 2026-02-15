@@ -1,0 +1,5 @@
+@startuml association
+actor Actor
+usecase "Caso de uso" as UC1
+Actor --> UC1
+@enduml

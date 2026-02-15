@@ -1,0 +1,5 @@
+@startuml client-order
+class Cliente
+class Pedido
+Cliente "1" --> "*" Pedido
+@enduml

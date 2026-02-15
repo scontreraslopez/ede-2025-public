@@ -1,0 +1,5 @@
+@startuml extend
+usecase "Realizar pedido" as UC1
+usecase "Aplicar descuento" as UC2
+UC2 ..> UC1 : <<extend>>
+@enduml

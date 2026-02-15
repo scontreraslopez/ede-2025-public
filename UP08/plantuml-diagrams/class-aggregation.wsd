@@ -1,0 +1,5 @@
+@startuml class-aggregation
+class Equipo
+class Jugador
+Equipo o-- Jugador : tiene
+@enduml

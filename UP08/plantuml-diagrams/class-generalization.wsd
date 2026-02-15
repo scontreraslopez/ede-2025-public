@@ -1,0 +1,8 @@
+@startuml class-generalization
+class Vehiculo
+class Coche
+class Moto
+
+Vehiculo <|-- Coche
+Vehiculo <|-- Moto
+@enduml

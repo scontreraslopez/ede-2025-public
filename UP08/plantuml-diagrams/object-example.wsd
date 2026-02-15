@@ -1,0 +1,6 @@
+@startuml object-example
+object "nombreObjeto:NombreClase" as obj {
+  atributo1 = valor1
+  atributo2 = valor2
+}
+@enduml

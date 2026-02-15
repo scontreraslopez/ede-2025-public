@@ -1,0 +1,6 @@
+@startuml
+usecase "Pagar" as UC1
+usecase "Pagar con tarjeta" as UC2
+usecase "Pagar en efectivo" as UC3
+UC1 <|-- UC2
+UC1 <|-- UC3

@@ -1,0 +1,5 @@
+@startuml person-passport
+class Persona
+class Pasaporte
+Persona "1" --> "0..1" Pasaporte
+@enduml

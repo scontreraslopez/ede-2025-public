@@ -1,0 +1,7 @@
+@startuml class-realization
+interface Volador {
+}
+class Pajaro
+
+Volador <|.. Pajaro
+@enduml

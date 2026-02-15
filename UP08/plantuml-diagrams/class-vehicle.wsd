@@ -1,0 +1,25 @@
+@startuml class-vehicle
+abstract class Vehiculo {
+  # marca: String
+  # modelo: String
+  # año: int
+  + arrancar()
+  + detener()
+  + {abstract} acelerar()
+}
+
+class Coche {
+  - numPuertas: int
+  + acelerar()
+  + abrirMaletero()
+}
+
+class Moto {
+  - cilindrada: int
+  + acelerar()
+  + hacerCaballito()
+}
+
+Vehiculo <|-- Coche
+Vehiculo <|-- Moto
+@enduml

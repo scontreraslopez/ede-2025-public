@@ -1,0 +1,5 @@
+@startuml generalization-actor
+actor Usuario
+actor Administrador
+Usuario <|-- Administrador
+@enduml
