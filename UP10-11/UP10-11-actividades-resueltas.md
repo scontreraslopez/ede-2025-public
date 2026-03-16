@@ -288,7 +288,7 @@ Aplicando la tabla de decisión anterior, el conjunto final (7 casos) es:
 
 Con el diseño completo, sabemos exactamente qué probar y qué resultado esperamos. Pasamos a la implementación.
 
-Se recoje por conveniencia en un archivo Excel [./UP10-11-casos-de-prueba.xlsx](./UP10-11-casos-de-prueba.xlsx) aparte para facilitar su lectura y edición, pero el formato es libre: lo importante es que cada caso de prueba esté claramente documentado con sus componentes esenciales (ID, precondiciones, acción, resultado esperado).
+Se recoge por conveniencia en un archivo Excel [./UP10-11-casos-de-prueba.xlsx](./UP10-11-casos-de-prueba.xlsx) aparte para facilitar su lectura y edición, pero el formato es libre: lo importante es que cada caso de prueba esté claramente documentado con sus componentes esenciales (ID, precondiciones, acción, resultado esperado).
 
 ---
 
@@ -301,19 +301,39 @@ Se recoje por conveniencia en un archivo Excel [./UP10-11-casos-de-prueba.xlsx](
 
 ### Paso 6: Crear la clase de test
 
-IntelliJ puede generar automáticamente el esqueleto de la clase de test:
+Este proyecto ya trae importadas las dependencias en `build.gradle.kts` para JUnit 5, así que estamos listos para crear la clase de test.
+
+![alt text](image-6.png)
+
+Lo primero que vamos a hacer es crear el paquete de prueba siguiendo la convención estándar de Gradle (`src/test/java/io/github/scontreraslopez/`). Para ello tenemos que rear la estructura de carpetas manualmente:
+
+![alt text](image-1.png)
+
+Elegimos
+
+![alt text](image-2.png)
+
+Aparecerá
+
+![alt text](image-3.png)
+
+A partir de aquí, IntelliJ puede generar automáticamente el esqueleto de la clase de test.
 
 1. Abre `Calculadora.java`.
 2. Haz clic sobre el nombre de la clase `Calculadora` en la línea de declaración.
-3. Pulsa `Alt+Enter` y selecciona **Create Test**.
+3. Pulsa `Alt+Enter` y selecciona **Create Test**. ![Create Test in IntelliJ](./img/create_test.png)
 4. En el diálogo que aparece:
    - **Testing library**: JUnit 5
    - **Class name**: `CalculadoraTest` (por defecto)
    - **Destination package**: `io.github.scontreraslopez`
-5. Acepta. IntelliJ creará `src/test/java/io/github/scontreraslopez/CalculadoraTest.java` y añadirá la carpeta de tests al proyecto.
+5. Acepta. IntelliJ creará `src/test/java/io/github/scontreraslopez/CalculadoraTest.java`.
 
-<!-- TODO ADD IMAGE: Captura del diálogo "Create Test" de IntelliJ con JUnit 5 seleccionado y el package correcto. -->
+![alt text](image-4.png)
 
+![alt text](image-5.png)
+
+> [!TIP]
+> Para que IntelliJ cree el test en la ruta correcta (`src/test/java/io/github/scontreraslopez/`), el directorio `src/test/java` debe estar marcado como **Test Sources Root**. Si no lo está, haz clic derecho sobre la carpeta → **Mark Directory as** → **Test Sources Root** antes de crear el test.
 > **¿Por qué `src/test/java`?** Gradle separa el código de producción (`src/main`) del código de pruebas (`src/test`). Los tests solo se compilan y ejecutan durante la fase de verificación; no se incluyen en el artefacto final desplegable.
 
 ---
@@ -339,7 +359,9 @@ class CalculadoraTest {
 }
 ```
 
-> **¿Por qué no `static` con `@BeforeAll`?** Si usáramos una sola instancia compartida, el estado que deja un test (memoria modificada, operación pendiente) contaminaría el siguiente, haciendo que los tests dependan entre sí y que los fallos sean difíciles de aislar. Con `@BeforeEach` cada test arranca con memoria `0.0` y sin operación pendiente.
+Este código lo que hace es crear una nueva instancia de `Calculadora` antes de cada test. De esta forma, cada test arranca con un estado limpio: memoria a `0.0` y sin operación pendiente.
+
+> **¿Por qué no `static` con `@BeforeAll`?** Si usáramos una sola instancia compartida, el estado que deja un test (memoria modificada, operación pendiente) contaminaría el siguiente, haciendo que los tests dependan entre sí y que los fallos sean difíciles de aislar. Con `@BeforeEach` cada test arranca con memoria `0.0` y sin operación pendiente. Básicamente, con `@BeforeEach` conseguimos nueva instancia → nuevo estado limpio → tests independientes.
 
 ---
 
@@ -360,9 +382,14 @@ void ingresarNumero_actualizaMemoria() {
 }
 ```
 
+El primer test verifica que la memoria de un objeto recién creado es `0.0`.
+El segundo test verifica que el método `ingresarNumero` actualiza la memoria al valor introducido.
+
 Ejecuta los tests con **Run ▶** sobre la clase o con `Ctrl+Shift+F10`. Deben aparecer en verde.
 
-<!-- TODO ADD IMAGE: Captura de IntelliJ con la barra verde y los dos primeros tests pasando. -->
+![alt text](image-7.png)
+
+![alt text](image-8.png)
 
 ---
 
@@ -419,9 +446,34 @@ void calcular_division_porCero_devuelveInfinitoPositivo() {
 
 > **¿Por qué `Double.POSITIVE_INFINITY`?** En Java, `1.0 / 0.0` no lanza excepción: devuelve `Infinity`, tal como define la especificación IEEE 754. Este es un comportamiento **definido** — el test lo verifica explícitamente.
 
+De nuevo, ejecuta la suite completa. Todos los tests deben estar en verde.
+
+Vamos a aprovechar este punto para introducir la comprobación de cobertura de código. En IntelliJ, haz clic derecho sobre la clase → **Run 'CalculadoraTest' with Coverage**. 
+
+![alt text](image-9.png)
+
+Esto ejecutará los tests y mostrará qué líneas de `Calculadora.java` han sido ejecutadas por los tests. Al final de la ejecución, haz clic en el porcentaje de cobertura que aparece en la barra inferior para ver el detalle:
+
+![alt text](image-10.png)
+
+No es una métrica perfecta, pero te da una idea visual de qué partes del código están siendo ejercitadas por los tests.
+
+- Class coverage: porcentaje de clases cubiertas por al menos un test.
+- Method coverage: porcentaje de métodos cubiertos por al menos un test.
+- Line coverage: porcentaje de líneas de código cubiertas por los tests.
+- Branch coverage: porcentaje de ramas (if/else, switch) cubiertas por los tests.
+
+Como hemos comentado en la teoría, en proyectos profesionales, en particular los realizados bajo el paraguas de frameworks formales como CMMi, se suele exigir un mínimo de cobertura (por ejemplo, 80% de line coverage). Sin embargo, la cobertura es solo una métrica orientativa: lo importante es que los tests sean buenos, no que sean muchos. Un test bien diseñado que cubre un caso crítico puede ser más valioso que diez tests superficiales que solo aumentan el porcentaje de cobertura sin aportar valor real.
+
+Con este breve paréntesis ya sabes como comprobar la cobertura de tus tests. En esta práctica, el objetivo no es alcanzar un número concreto, sino asegurarnos de que cada caso de prueba que hemos diseñado se corresponde con un test implementado y que todos los tests pasan correctamente. Continuemos con la implementación de los tests restantes.
+
 ---
 
 ### Paso 10: Tests de `inicializarMemoria`
+
+Llega el momento de verificar que `inicializarMemoria` cumple su función: reiniciar la memoria a `0.0` y borrar cualquier operación pendiente (si has usado calculadoras la típica tecla que pone `AC`).
+
+Para ello, diseñamos un test que primero realiza una operación (por ejemplo, una suma) para modificar el estado de la calculadora, y luego llama a `inicializarMemoria` para verificar que la memoria se ha reiniciado correctamente.
 
 ```java
 @Test
@@ -438,6 +490,8 @@ void inicializarMemoria_trasOperacion_reiniciaMemoriaACero() {
 ---
 
 ### Paso 11: Implementar los tests de `absoluto` y `esPar`
+
+Ahora vamos a implementar los casos de prueba para `absoluto` y `esPar` siguiendo el diseño que hicimos en la Fase 1. Para cada método, implementamos los casos correspondientes a las clases de equivalencia identificadas.
 
 ```java
 @Test
@@ -528,9 +582,9 @@ void redondearDefecto_negativoEnteroExactoMayor_sinDecimales() {
 
 **Ejecuta estos tests. Los dos últimos fallarán.**
 
-<!-- TODO ADD IMAGE: Captura de IntelliJ con CP-RD-06 y CP-RD-07 en rojo, mostrando "expected: <-1> but was: <-2>" y "expected: <-2> but was: <-3>". -->
+![alt text](image-11.png)
 
-El análisis de valores límite ha descubierto un bug real. Inspeccionemos el código en `Calculadora.java`:
+El análisis de valores límite ha descubierto un bug real. El método redondearDefecto está fallando para los valores de `-1.0` y `-2.0`. Inspeccionemos el código en `Calculadora.java`:
 
 ```java
 public int redondearDefecto(double d) {
@@ -542,9 +596,13 @@ public int redondearDefecto(double d) {
 }
 ```
 
-La condición `if (d < 0)` aplica el decremento a *todos* los negativos, incluidos los enteros exactos. El resultado: `redondearDefecto(-1.0)` devuelve `-2` en lugar de `-1`. La corrección sería usar `if (d < result)`, que solo decrementa cuando la truncación perdió información decimal.
+Observa el código. La condición `if (d < 0)` aplica el decremento a *todos* los negativos, incluidos los enteros exactos. El resultado: `redondearDefecto(-1.0)` devuelve `-2` en lugar de `-1`. La corrección sería usar `if (d < result)`, que solo decrementa cuando la truncación perdió información decimal. Es decir si `d` es `-1.5`, `result` es `-1`, y `d < result` es `true`, entonces se decrementa a `-2`. Pero si `d` es `-1.0`, `result` es `-1`, y `d < result` es `false`, por lo que no se decrementa, quedando el resultado correcto de `-1`.
 
 > Este resultado ilustra el valor real del diseño previo: el caso CP-RD-03 con `-1.5` pasaba (correcto, porque `-1.5` sí tiene parte decimal negativa). Solo al incluir CP-RD-05 con `-1.0` — el valor **límite** entre las dos clases — se descubre el defecto. Sin BVA, el bug habría pasado desapercibido.
+
+Corrige el método `redondearDefecto` y vuelve a ejecutar los tests. Todos deben pasar en verde.
+
+Aún a pesar de la utilidad para detectar bugs, quiero reforzar la idea de que esta NO es la principal utilidad de automatizar el testing, en particular en proyectos bajo metodologías ágiles. Su principal aportación es que nos permite verificar rápidamente que el código sigue funcionando correctamente a medida que lo modificamos. En un proyecto real, el código evoluciona constantemente: se añaden nuevas funcionalidades, se refactoriza para mejorar la calidad, se corrigen bugs... Sin una suite de tests automatizados, cada cambio requeriría una verificación manual exhaustiva para asegurarnos de que no hemos roto nada. Con los tests automatizados, podemos ejecutar toda la suite en segundos y tener la confianza de que el código sigue funcionando como se espera. Esto es especialmente valioso en proyectos ágiles, donde la iteración rápida y la entrega continua son clave. En este contexto, los tests no solo detectan bugs, sino que actúan como una red de seguridad que nos permite evolucionar el código con confianza y agilidad.
 
 ---
 
@@ -572,4 +630,7 @@ Crear clase de test con @BeforeEach
 Implementar en JUnit 5 paso a paso
     ↓
 Ejecutar → verde excepto redondearDefecto con negativos enteros (bug detectado)
+    ↓
+Corregir el bug → ejecutar → todos los tests en verde
+
 ```
