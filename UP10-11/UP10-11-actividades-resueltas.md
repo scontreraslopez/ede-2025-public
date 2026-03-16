@@ -303,19 +303,19 @@ Se recoge por conveniencia en un archivo Excel [./UP10-11-casos-de-prueba.xlsx](
 
 Este proyecto ya trae importadas las dependencias en `build.gradle.kts` para JUnit 5, así que estamos listos para crear la clase de test.
 
-![alt text](image-6.png)
+![Proyecto inicial en IntelliJ antes de crear la clase de test](./img/intellij-proyecto-inicial.png)
 
 Lo primero que vamos a hacer es crear el paquete de prueba siguiendo la convención estándar de Gradle (`src/test/java/io/github/scontreraslopez/`). Para ello tenemos que rear la estructura de carpetas manualmente:
 
-![alt text](image-1.png)
+![Creación manual del paquete de test en IntelliJ](./img/intellij-crear-paquete-test.png)
 
 Elegimos
 
-![alt text](image-2.png)
+![Diálogo para crear nuevo paquete en IntelliJ](./img/intellij-dialogo-nuevo-paquete.png)
 
 Aparecerá
 
-![alt text](image-3.png)
+![Paquete de test creado en la estructura del proyecto](./img/intellij-paquete-test-creado.png)
 
 A partir de aquí, IntelliJ puede generar automáticamente el esqueleto de la clase de test.
 
@@ -328,9 +328,9 @@ A partir de aquí, IntelliJ puede generar automáticamente el esqueleto de la cl
    - **Destination package**: `io.github.scontreraslopez`
 5. Acepta. IntelliJ creará `src/test/java/io/github/scontreraslopez/CalculadoraTest.java`.
 
-![alt text](image-4.png)
+![Estructura de archivos tras crear la clase de test con IntelliJ](./img/intellij-estructura-test-creada.png)
 
-![alt text](image-5.png)
+![Clase CalculadoraTest generada automáticamente por IntelliJ](./img/intellij-clase-test-generada.png)
 
 > [!TIP]
 > Para que IntelliJ cree el test en la ruta correcta (`src/test/java/io/github/scontreraslopez/`), el directorio `src/test/java` debe estar marcado como **Test Sources Root**. Si no lo está, haz clic derecho sobre la carpeta → **Mark Directory as** → **Test Sources Root** antes de crear el test.
@@ -387,9 +387,9 @@ El segundo test verifica que el método `ingresarNumero` actualiza la memoria al
 
 Ejecuta los tests con **Run ▶** sobre la clase o con `Ctrl+Shift+F10`. Deben aparecer en verde.
 
-![alt text](image-7.png)
+![Tests iniciales ejecutándose en verde en IntelliJ](./img/intellij-tests-en-verde.png)
 
-![alt text](image-8.png)
+![Panel de resultados de ejecución de tests en IntelliJ](./img/intellij-panel-resultados-tests.png)
 
 ---
 
@@ -450,11 +450,11 @@ De nuevo, ejecuta la suite completa. Todos los tests deben estar en verde.
 
 Vamos a aprovechar este punto para introducir la comprobación de cobertura de código. En IntelliJ, haz clic derecho sobre la clase → **Run 'CalculadoraTest' with Coverage**. 
 
-![alt text](image-9.png)
+![Vista de cobertura de código al ejecutar tests con Run with Coverage](./img/intellij-run-with-coverage.png)
 
 Esto ejecutará los tests y mostrará qué líneas de `Calculadora.java` han sido ejecutadas por los tests. Al final de la ejecución, haz clic en el porcentaje de cobertura que aparece en la barra inferior para ver el detalle:
 
-![alt text](image-10.png)
+![Informe detallado de cobertura por clase, método, línea y rama](./img/intellij-informe-cobertura.png)
 
 No es una métrica perfecta, pero te da una idea visual de qué partes del código están siendo ejercitadas por los tests.
 
@@ -582,7 +582,7 @@ void redondearDefecto_negativoEnteroExactoMayor_sinDecimales() {
 
 **Ejecuta estos tests. Los dos últimos fallarán.**
 
-![alt text](image-11.png)
+![Tests BVA con los dos últimos casos fallando en rojo](./img/intellij-tests-bva-fallos.png)
 
 El análisis de valores límite ha descubierto un bug real. El método redondearDefecto está fallando para los valores de `-1.0` y `-2.0`. Inspeccionemos el código en `Calculadora.java`:
 
@@ -634,3 +634,30 @@ Ejecutar → verde excepto redondearDefecto con negativos enteros (bug detectado
 Corregir el bug → ejecutar → todos los tests en verde
 
 ```
+
+## Parametrized tests
+
+A veces escribir una suite de tests BVA puede llevar a una explosión de casos, especialmente si hay múltiples variables con fronteras. En estos casos, JUnit 5 ofrece la posibilidad de escribir **parametrized tests**, que permiten ejecutar el mismo test con diferentes conjuntos de datos. Esto es especialmente útil para métodos como `redondearDefecto`, donde el comportamiento esperado sigue una lógica clara que se puede expresar en una tabla de datos.
+
+En lugar de escribir un test separado para cada caso, podemos usar `@ParameterizedTest` junto con `@CsvSource` para definir una tabla de entradas y resultados esperados. Por ejemplo:
+
+```java
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+@ParameterizedTest
+@CsvSource({
+    "2.7, 2", // positivo con decimales
+    "2.0, 2", // positivo entero
+    "0.0, 0", // cero
+    "-0.5, -1", // negativo con decimales
+    "-1.5, -2", // negativo con decimales
+    "-1.0, -1", // negativo entero
+    "-2.0, -2"  // negativo entero
+})
+void redondearDefecto_parametrizado(double input, int expected) {
+    assertEquals(expected, c.redondearDefecto(input));
+}
+```
+
+![Resultado de los tests parametrizados con @CsvSource en JUnit 5](./img/intellij-tests-parametrizados-junit5.png)
