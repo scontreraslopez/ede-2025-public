@@ -56,3 +56,9 @@ Completa `ConversorUnidadesTest.java` para verificar el comportamiento de la cla
   assertThrows(IllegalArgumentException.class, () -> conversor.kmAMillas(-5));
   ```
 - ¡No olvides mirar la cheatsheet de JUnit 5 para recordar la sintaxis!
+
+## Solución
+
+Dejo el código de la solución de referencia en [./ConversorUnidadesTest_solucion.java](./ConversorUnidadesTest_solucion.java). No es la única forma de hacerlo, pero te puede servir para comparar tu solución.
+
+
