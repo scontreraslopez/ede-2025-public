@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * kmAMillas_conValorPositivo_devuelveConversionCorrecta(), kmAMillas_conCero_devuelveCero() , kmAMillas_conValorNegativo_lanzaExcepcion
  * 2. y/o usar @ParameterizedTest en los tests del mismo tipo.
  *
- * Pero para sepáis lo mínimo que se espera en el examen.
+ * Pero para sepáis las simplificaciones que se aceptan en el examen, siendo conscientes de que son simplificaciones, de cara a vuestro futuro profesional.
  *
  * | Método | Entrada | Resultado esperado |
  * |--------|---------|-------------------|
